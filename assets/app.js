@@ -76,6 +76,16 @@ function populateVoices() {
     // Restore preference if available
     const prefs = JSON.parse(localStorage.getItem('tts_prefs') || '{}');
     if (prefs.voice) voiceSelect.value = prefs.voice;
+
+    // Show warning if only one or zero voices are available
+    const warning = document.getElementById('voice-warning');
+    if (voices.length <= 1) {
+        warning.style.display = 'block';
+        warning.textContent =
+            'Note: Your browser only provides a single TTS voice. Voice selection may not be available on this device/browser.';
+    } else {
+        warning.style.display = 'none';
+    }
 }
 
 // Some browsers load voices asynchronously
