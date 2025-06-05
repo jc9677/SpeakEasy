@@ -88,9 +88,26 @@ function populateVoices() {
     }
 }
 
-// Some browsers load voices asynchronously
+// Some browsers load voices asynchronously, but some never fire onvoiceschanged.
+// We'll retry populating voices for a few seconds after page load.
+let voicesPopulated = false;
+function tryPopulateVoices(retries = 20, delay = 200) {
+    populateVoices();
+    const voices = synth.getVoices();
+    if (voices.length > 0) {
+        voicesPopulated = true;
+        return;
+    }
+    if (retries > 0) {
+        setTimeout(() => tryPopulateVoices(retries - 1, delay), delay);
+    }
+}
+
 if (typeof synth.onvoiceschanged !== 'undefined') {
-    synth.onvoiceschanged = populateVoices;
+    synth.onvoiceschanged = () => {
+        voicesPopulated = true;
+        populateVoices();
+    };
 }
 
 function speak(text, voiceName, rate) {
@@ -124,5 +141,5 @@ audioPlayer.style.display = 'none'; // Hide unused audio element
 
 
 // Init
-populateVoices();
+tryPopulateVoices();
 loadPreferences();
