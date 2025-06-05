@@ -11,7 +11,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.css" rel="stylesheet">
+    <!-- Feather Icons: Use JS, not CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 </head>
 <body>
     <div class="background-pattern"></div>
@@ -126,7 +127,10 @@
         <audio id="audio-player" controls style="display: none;"></audio>
     </div>
 
+    <!-- Piper/sherpa-onnx WASM TTS integration -->
     <script src="assets/app.js"></script>
+    <script src="assets/sherpa-onnx-tts.js"></script>
+    <script src="assets/sherpa-onnx-wasm-main-tts.js"></script>
     <script>
         // Register Service Worker for offline functionality
         if ('serviceWorker' in navigator) {

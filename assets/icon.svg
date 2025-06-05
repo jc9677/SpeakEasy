@@ -1,0 +1,9 @@
+<svg width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="192" height="192" fill="#2d3748"/>
+  <g transform="translate(84, 84) scale(1.75)">
+    <path d="M12 1L21.5 7v10L12 23 2.5 17V7z"/>
+    <path d="M12 8v8"/>
+    <path d="M8.5 10.5L15.5 13.5"/>
+    <path d="M8.5 13.5L15.5 10.5"/>
+  </g>
+</svg>
