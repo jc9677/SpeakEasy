@@ -1,5 +1,5 @@
-// app.js - Main logic for Offline TTS Web App
-// This is a scaffold. Piper WASM integration and caching will be added next.
+// app.js - Voice Synthesis Studio
+// Modern TTS Web App using Web Speech API
 
 const textArea = document.getElementById('tts-text');
 const voiceSelect = document.getElementById('voice-select');
@@ -10,27 +10,7 @@ const speakBtn = document.getElementById('speak-btn');
 const stopBtn = document.getElementById('stop-btn');
 const audioPlayer = document.getElementById('audio-player');
 
-
-let VOICES = [];
-let voiceModels = {};
-let piperWorker = null;
-
-async function fetchVoices() {
-    const res = await fetch('assets/piper-voices.json');
-    VOICES = await res.json();
-    populateVoices();
-}
-
-function populateVoices() {
-    voiceSelect.innerHTML = '';
-    VOICES.forEach(v => {
-        const opt = document.createElement('option');
-        opt.value = v.id;
-        opt.textContent = v.name;
-        voiceSelect.appendChild(opt);
-    });
-}
-
+// Preferences management
 function loadPreferences() {
     const prefs = JSON.parse(localStorage.getItem('tts_prefs') || '{}');
     if (prefs.voice) voiceSelect.value = prefs.voice;
@@ -48,15 +28,13 @@ function savePreferences() {
     localStorage.setItem('tts_prefs', JSON.stringify(prefs));
 }
 
+// Event listeners for preferences
 voiceSelect.addEventListener('change', savePreferences);
 speedRange.addEventListener('input', () => {
     speedValue.textContent = speedRange.value;
     savePreferences();
 });
 loopCheckbox.addEventListener('change', savePreferences);
-
-
-// --- Piper WASM Integration ---
 
 // --- Web Speech API Integration ---
 let synth = window.speechSynthesis;
@@ -80,11 +58,11 @@ function populateVoices() {
     // Show warning if only one or zero voices are available
     const warning = document.getElementById('voice-warning');
     if (voices.length <= 1) {
-        warning.style.display = 'block';
+        warning.classList.add('show');
         warning.textContent =
             'Note: Your browser only provides a single TTS voice. Voice selection may not be available on this device/browser.';
     } else {
-        warning.style.display = 'none';
+        warning.classList.remove('show');
     }
 }
 

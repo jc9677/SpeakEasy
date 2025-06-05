@@ -3,43 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TTS Web App</title>
+    <title>Voice Synthesis Studio</title>
     <link rel="stylesheet" href="assets/styles.css">
-    <script>
-      window.Module = {
-        locateFile: function(path) {
-          if (path.endsWith('.wasm') || path.endsWith('.data')) {
-            return 'assets/' + path;
-          }
-          return path;
-        },
-        onRuntimeInitialized: function() {
-          window.sherpaWasmReady = true;
-        }
-      };
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.css" rel="stylesheet">
 </head>
 <body>
+    <div class="background-pattern"></div>
+    
     <div class="container">
-        <h1>TTS Web App</h1>
-        <label for="tts-text">Enter text:</label>
-        <textarea id="tts-text" rows="5" placeholder="Paste your text here..."></textarea>
+        <header class="app-header">
+            <div class="header-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1L21.5 7v10L12 23 2.5 17V7z"/>
+                    <path d="M12 8v8"/>
+                    <path d="M8.5 10.5L15.5 13.5"/>
+                    <path d="M8.5 13.5L15.5 10.5"/>
+                </svg>
+            </div>
+            <h1>Voice Synthesis Studio</h1>
+            <p class="subtitle">Transform text into speech with natural voices</p>
+        </header>
 
-        <label for="voice-select">Voice:</label>
-        <select id="voice-select"></select>
-        <div id="voice-warning" style="color:#b91c1c; font-size:0.95em; display:none; margin-bottom:0.5em;"></div>
+        <div class="main-content">
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="tts-text" class="form-label">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10,9 9,9 8,9"/>
+                        </svg>
+                        Text Content
+                    </label>
+                    <textarea id="tts-text" rows="6" placeholder="Enter the text you'd like to convert to speech..."></textarea>
+                </div>
 
-        <label for="speed-range">Speed: <span id="speed-value">1.0</span>x</label>
-        <input type="range" id="speed-range" min="0.5" max="2.0" step="0.05" value="1.0">
+                <div class="controls-grid">
+                    <div class="form-group">
+                        <label for="voice-select" class="form-label">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1L21.5 7v10L12 23 2.5 17V7z"/>
+                                <path d="M12 8v8"/>
+                            </svg>
+                            Voice
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="voice-select"></select>
+                        </div>
+                        <div id="voice-warning" class="warning-message"></div>
+                    </div>
 
-        <label><input type="checkbox" id="loop-checkbox"> Loop playback</label>
+                    <div class="form-group">
+                        <label for="speed-range" class="form-label">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                            Speed: <span id="speed-value" class="speed-indicator">1.0</span>x
+                        </label>
+                        <div class="range-wrapper">
+                            <input type="range" id="speed-range" min="0.5" max="2.0" step="0.05" value="1.0">
+                            <div class="range-labels">
+                                <span>0.5x</span>
+                                <span>2.0x</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <button id="speak-btn">Speak</button>
-        <button id="stop-btn">Stop</button>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="loop-checkbox">
+                        <span class="checkmark"></span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 1l4 4-4 4"/>
+                            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                            <path d="M7 23l-4-4 4-4"/>
+                            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                        </svg>
+                        Loop playback
+                    </label>
+                </div>
+            </div>
 
-        <audio id="audio-player" controls style="width:100%; margin-top:1em;"></audio>
+            <div class="action-section">
+                <div class="button-group">
+                    <button id="speak-btn" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                        </svg>
+                        Generate Speech
+                    </button>
+                    <button id="stop-btn" class="btn btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="6" y="6" width="12" height="12"/>
+                        </svg>
+                        Stop
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="app-footer">
+            <p>Powered by Web Speech API • Works offline</p>
+        </footer>
+
+        <audio id="audio-player" controls style="display: none;"></audio>
     </div>
-    <script src="assets/sherpa-onnx-wasm-main-tts.js"></script>
+
     <script src="assets/app.js"></script>
 </body>
 </html>
