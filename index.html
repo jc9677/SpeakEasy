@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline TTS Web App</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <script>
+      window.Module = {
+        locateFile: function(path) {
+          if (path.endsWith('.wasm') || path.endsWith('.data')) {
+            return 'assets/' + path;
+          }
+          return path;
+        },
+        onRuntimeInitialized: function() {
+          window.sherpaWasmReady = true;
+        }
+      };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Offline TTS Web App</h1>
+        <label for="tts-text">Enter text:</label>
+        <textarea id="tts-text" rows="5" placeholder="Paste your text here..."></textarea>
+
+        <label for="voice-select">Voice:</label>
+        <select id="voice-select"></select>
+
+        <label for="speed-range">Speed: <span id="speed-value">1.0</span>x</label>
+        <input type="range" id="speed-range" min="0.5" max="2.0" step="0.05" value="1.0">
+
+        <label><input type="checkbox" id="loop-checkbox"> Loop playback</label>
+
+        <button id="speak-btn">Speak</button>
+        <button id="stop-btn">Stop</button>
+
+        <audio id="audio-player" controls style="width:100%; margin-top:1em;"></audio>
+    </div>
+    <script src="assets/sherpa-onnx-wasm-main-tts.js"></script>
+    <script src="assets/app.js"></script>
+</body>
+</html>

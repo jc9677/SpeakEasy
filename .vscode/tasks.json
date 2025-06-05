@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Start local web server for TTS app",
+			"command": "python3 -m http.server 8000",
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}
