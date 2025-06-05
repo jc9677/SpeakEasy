@@ -1,4 +1,4 @@
-# Offline TTS Web App
+# SpeakEasy - An offline TTS Web App
 
 A simple, browser-based Text-to-Speech (TTS) app that works offline using your system's built-in voices via the Web Speech API. No server, no WASM, no external models required—just open in your browser or deploy to GitHub Pages!
 
