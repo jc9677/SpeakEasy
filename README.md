@@ -37,4 +37,4 @@ A simple, browser-based Text-to-Speech (TTS) app that works offline using your s
 - Style with `assets/styles.css`.
 
 ## License
-?
+MIT?
