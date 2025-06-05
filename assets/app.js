@@ -1,4 +1,4 @@
-// app.js - Voice Synthesis Studio
+// app.js - SpeakEasy
 // Modern TTS Web App using Web Speech API
 
 const textArea = document.getElementById('tts-text');
@@ -12,7 +12,7 @@ const resetTextBtn = document.getElementById('reset-text-btn');
 const audioPlayer = document.getElementById('audio-player');
 
 // Default welcome message
-const DEFAULT_TEXT = "Welcome to Voice Studio! Replace this text with whatever you want me to say.";
+const DEFAULT_TEXT = "Welcome to SpeakEasy! Replace this text with whatever you want me to say.";
 
 // Preferences management
 function loadPreferences() {
