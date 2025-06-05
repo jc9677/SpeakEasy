@@ -8,15 +8,37 @@ const speedValue = document.getElementById('speed-value');
 const loopCheckbox = document.getElementById('loop-checkbox');
 const speakBtn = document.getElementById('speak-btn');
 const stopBtn = document.getElementById('stop-btn');
+const resetTextBtn = document.getElementById('reset-text-btn');
 const audioPlayer = document.getElementById('audio-player');
+
+// Default welcome message
+const DEFAULT_TEXT = "Welcome to Voice Studio! Replace this text with whatever you want me to say.";
 
 // Preferences management
 function loadPreferences() {
     const prefs = JSON.parse(localStorage.getItem('tts_prefs') || '{}');
-    if (prefs.voice) voiceSelect.value = prefs.voice;
-    if (prefs.speed) speedRange.value = prefs.speed;
-    if (prefs.loop !== undefined) loopCheckbox.checked = prefs.loop;
-    speedValue.textContent = speedRange.value;
+    
+    // Load text content (use saved text or default welcome message)
+    const savedText = localStorage.getItem('tts_text');
+    textArea.value = savedText !== null ? savedText : DEFAULT_TEXT;
+    
+    // Load voice preference (only if voices are available)
+    if (prefs.voice && voiceSelect.options.length > 0) {
+        // Check if the saved voice exists in the current voice list
+        const savedVoiceExists = Array.from(voiceSelect.options).some(option => option.value === prefs.voice);
+        if (savedVoiceExists) {
+            voiceSelect.value = prefs.voice;
+        }
+    }
+    
+    // Load other preferences
+    if (prefs.speed) {
+        speedRange.value = prefs.speed;
+        speedValue.textContent = speedRange.value;
+    }
+    if (prefs.loop !== undefined) {
+        loopCheckbox.checked = prefs.loop;
+    }
 }
 
 function savePreferences() {
@@ -28,6 +50,23 @@ function savePreferences() {
     localStorage.setItem('tts_prefs', JSON.stringify(prefs));
 }
 
+function saveTextContent() {
+    const text = textArea.value.trim();
+    if (text && text !== DEFAULT_TEXT) {
+        localStorage.setItem('tts_text', text);
+    }
+}
+
+function resetTextContent() {
+    textArea.value = DEFAULT_TEXT;
+    localStorage.removeItem('tts_text');
+    // Add a subtle animation to indicate the reset
+    textArea.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+        textArea.style.transform = 'scale(1)';
+    }, 150);
+}
+
 // Event listeners for preferences
 voiceSelect.addEventListener('change', savePreferences);
 speedRange.addEventListener('input', () => {
@@ -35,6 +74,9 @@ speedRange.addEventListener('input', () => {
     savePreferences();
 });
 loopCheckbox.addEventListener('change', savePreferences);
+
+// Event listener for reset button
+resetTextBtn.addEventListener('click', resetTextContent);
 
 // --- Web Speech API Integration ---
 let synth = window.speechSynthesis;
@@ -51,9 +93,12 @@ function populateVoices() {
         opt.textContent = v.name + (v.lang ? ` (${v.lang})` : '');
         voiceSelect.appendChild(opt);
     });
-    // Restore preference if available
+    
+    // Restore saved voice preference
     const prefs = JSON.parse(localStorage.getItem('tts_prefs') || '{}');
-    if (prefs.voice) voiceSelect.value = prefs.voice;
+    if (prefs.voice && voices.find(v => v.name === prefs.voice)) {
+        voiceSelect.value = prefs.voice;
+    }
 
     // Show warning if only one or zero voices are available
     const warning = document.getElementById('voice-warning');
@@ -74,6 +119,8 @@ function tryPopulateVoices(retries = 20, delay = 200) {
     const voices = synth.getVoices();
     if (voices.length > 0) {
         voicesPopulated = true;
+        // Load other preferences after voices are populated
+        loadPreferences();
         return;
     }
     if (retries > 0) {
@@ -85,6 +132,8 @@ if (typeof synth.onvoiceschanged !== 'undefined') {
     synth.onvoiceschanged = () => {
         voicesPopulated = true;
         populateVoices();
+        // Load preferences after voices change
+        loadPreferences();
     };
 }
 
@@ -105,6 +154,10 @@ function speak(text, voiceName, rate) {
 speakBtn.addEventListener('click', () => {
     const text = textArea.value.trim();
     if (!text) return;
+    
+    // Save the text content when Generate button is pressed
+    saveTextContent();
+    
     currentText = text;
     loopRequested = loopCheckbox.checked;
     speak(text, voiceSelect.value, speedRange.value);
@@ -120,4 +173,5 @@ audioPlayer.style.display = 'none'; // Hide unused audio element
 
 // Init
 tryPopulateVoices();
+// Load preferences initially (will be called again when voices are loaded)
 loadPreferences();

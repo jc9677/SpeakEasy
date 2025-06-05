@@ -128,10 +128,36 @@ body {
     font-size: 0.95rem;
     color: var(--text-primary);
     margin-bottom: 0.75rem;
+    justify-content: space-between;
 }
 
 .form-label svg {
     color: var(--border-focus);
+}
+
+.reset-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: auto;
+}
+
+.reset-btn:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: var(--border-focus);
+    color: var(--border-focus);
+    transform: rotate(180deg);
+}
+
+.reset-btn:active {
+    transform: rotate(180deg) scale(0.95);
 }
 
 textarea {
