@@ -14,6 +14,35 @@ const audioPlayer = document.getElementById('audio-player');
 // Default welcome message
 const DEFAULT_TEXT = "Welcome to SpeakEasy! Replace this text with whatever you want me to say.";
 
+// Offline status management
+function showOfflineReady() {
+    // Create a temporary notification to show offline readiness
+    const notification = document.createElement('div');
+    notification.className = 'offline-notification';
+    notification.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20,6 9,17 4,12"></polyline>
+        </svg>
+        App cached - now works offline!
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 3000);
+}
+
+// Listen for service worker events
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        showOfflineReady();
+    });
+}
+
 // Preferences management
 function loadPreferences() {
     const prefs = JSON.parse(localStorage.getItem('tts_prefs') || '{}');

@@ -1,0 +1,27 @@
+{
+  "name": "SpeakEasy",
+  "short_name": "SpeakEasy",
+  "description": "Transform text into speech with natural voices - works offline",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2d3748",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjY3ZWVhIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTEyIDFMMjEuNSA3djEwTDEyIDIzIDIuNSAxN1Y3eiIvPjxwYXRoIGQ9Ik0xMiA4djgiLz48cGF0aCBkPSJNOC41IDEwLjVMMTUuNSAxMy41Ii8+PHBhdGggZD0iTTguNSAxMy41TDE1LjUgMTAuNSIvPjwvc3ZnPg==",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgdmlld0JveD0iMCAwIDY0MCA0ODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjY0MCIgaGVpZ2h0PSI0ODAiIGZpbGw9IiMyZDM3NDgiLz48dGV4dCB4PSIzMjAiIHk9IjI0MCIgZm9udC1mYW1pbHk9IkludGVyIiBmb250LXNpemU9IjM2IiBmaWxsPSIjZTJlOGYwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5TcGVha0Vhc3k8L3RleHQ+PC9zdmc+",
+      "sizes": "640x480",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ]
+}
